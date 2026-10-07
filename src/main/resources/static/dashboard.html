@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | VitalPulse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --card-bg: rgba(23, 32, 51, 0.7);
+            --accent: #6366f1;
+            --accent-green: #10b981;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
+
+        body {
+            background: #0b0f19;
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .header {
+            max-width: 850px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h2 { font-size: 24px; font-weight: 800; margin: 0; }
+        .header span { color: var(--accent); }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover { background: rgba(239, 68, 68, 0.2); }
+
+        .container { max-width: 850px; margin: 0 auto; }
+
+        .banner-reached {
+            display: none;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+            border: 1px solid #10b981;
+            color: #34d399;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .goal-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 22px;
+            backdrop-filter: blur(12px);
+        }
+
+        .goal-card h4 { margin: 0 0 10px 0; color: var(--text-sub); font-size: 13px; font-weight: 600; text-transform: uppercase; }
+
+        .val-container { font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+
+        .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .progress-bar-fill.achieved { background: var(--accent-green) !important; }
+
+        .form-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(12px);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(11, 15, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: white;
+            outline: none;
+        }
+
+        .form-group input:focus { border-color: var(--accent); }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+
+        .btn-submit:hover { transform: translateY(-2px); }
+
+        .table-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-sub);
+            padding: 16px 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        td { padding: 16px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 14px; }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-badge.reached { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .status-badge.pending { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2>Welcome, <span id="userDisplay">...</span></h2>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+    <div id="goalBanner" class="banner-reached">🎉 All Daily Targets Completed! Outstanding Effort!</div>
+
+    <div class="goals-grid">
+        <div class="goal-card">
+            <h4>Steps</h4>
+            <div class="val-container"><span id="stepsVal">0</span> / 10,000</div>
+            <div class="progress-bar-bg"><div id="stepsBar" class="progress-bar-fill"></div></div>
+        </div>
+        <div class="goal-card">
+            <h4>Water Intake</h4>
+            <div class="val-container"><span id="waterVal">0</span> / 3.5 L</div>
+            <div class="progress-bar-bg"><div id="waterBar" class="progress-bar-fill"></div></div>
+        </div>
+        <div class="goal-card">
+            <h4>Calories</h4>
+            <div class="val-container"><span id="caloriesVal">0</span> / 2,000</div>
+            <div class="progress-bar-bg"><div id="caloriesBar" class="progress-bar-fill"></div></div>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="logDate">
+            </div>
+            <div class="form-group">
+                <label>Steps Walked</label>
+                <input type="number" id="steps" placeholder="10000">
+            </div>
+            <div class="form-group">
+                <label>Water (Liters)</label>
+                <input type="number" step="0.1" id="water" placeholder="3.5">
+            </div>
+            <div class="form-group">
+                <label>Calories (kcal)</label>
+                <input type="number" id="calories" placeholder="2000">
+            </div>
+        </div>
+        <button class="btn-submit" onclick="saveLog()">Save Daily Entry</button>
+    </div>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Steps</th>
+                    <th>Water</th>
+                    <th>Calories</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="logsTable"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    const TARGET_STEPS = 10000;
+    const TARGET_WATER = 3.5;
+    const TARGET_CALORIES = 2000;
+
+    const userId = localStorage.getItem('userId');
+    const username = localStorage.getItem('username');
+
+    if (!userId) {
+        window.location.href = '/login.html';
+    } else {
+        document.getElementById('userDisplay').innerText = username;
+        document.getElementById('logDate').valueAsDate = new Date();
+        document.getElementById('logDate').addEventListener('change', loadTodayMetrics);
+        loadLogs();
+    }
+
+    async function loadTodayMetrics() {
+        const selectedDate = document.getElementById('logDate').value;
+        const res = await fetch(`/api/health/logs/${userId}`);
+        const data = await res.json();
+
+        const todayLog = data.find(item => item.date === selectedDate);
+        if (todayLog) {
+            document.getElementById('steps').value = todayLog.steps;
+            document.getElementById('water').value = todayLog.waterIntakeLiters;
+            document.getElementById('calories').value = todayLog.calorieIntake;
+            updateProgressCards(todayLog.steps, todayLog.waterIntakeLiters, todayLog.calorieIntake);
+        } else {
+            document.getElementById('steps').value = '';
+            document.getElementById('water').value = '';
+            document.getElementById('calories').value = '';
+            updateProgressCards(0, 0, 0);
+        }
+    }
+
+    function updateProgressCards(steps, water, calories) {
+        document.getElementById('stepsVal').innerText = steps.toLocaleString();
+        document.getElementById('waterVal').innerText = water;
+        document.getElementById('caloriesVal').innerText = calories.toLocaleString();
+
+        const stepsPct = Math.min(100, (steps / TARGET_STEPS) * 100);
+        const waterPct = Math.min(100, (water / TARGET_WATER) * 100);
+        const calPct = Math.min(100, (calories / TARGET_CALORIES) * 100);
+
+        const stepsBar = document.getElementById('stepsBar');
+        const waterBar = document.getElementById('waterBar');
+        const calBar = document.getElementById('caloriesBar');
+
+        stepsBar.style.width = stepsPct + '%';
+        waterBar.style.width = waterPct + '%';
+        calBar.style.width = calPct + '%';
+
+        if (steps >= TARGET_STEPS) stepsBar.classList.add('achieved'); else stepsBar.classList.remove('achieved');
+        if (water >= TARGET_WATER) waterBar.classList.add('achieved'); else waterBar.classList.remove('achieved');
+        if (calories >= TARGET_CALORIES) calBar.classList.add('achieved'); else calBar.classList.remove('achieved');
+
+        const allReached = steps >= TARGET_STEPS && water >= TARGET_WATER && calories >= TARGET_CALORIES;
+        document.getElementById('goalBanner').style.display = allReached ? 'block' : 'none';
+    }
+
+    async function loadLogs() {
+        const res = await fetch(`/api/health/logs/${userId}`);
+        const data = await res.json();
+        const tbody = document.getElementById('logsTable');
+        tbody.innerHTML = '';
+
+        data.forEach(item => {
+            const reached = item.steps >= TARGET_STEPS && item.waterIntakeLiters >= TARGET_WATER && item.calorieIntake >= TARGET_CALORIES;
+            tbody.innerHTML += `<tr>
+                <td>${item.date}</td>
+                <td>${item.steps.toLocaleString()}</td>
+                <td>${item.waterIntakeLiters} L</td>
+                <td>${item.calorieIntake.toLocaleString()} kcal</td>
+                <td><span class="status-badge ${reached ? 'reached' : 'pending'}">${reached ? 'Goal Reached' : 'In Progress'}</span></td>
+            </tr>`;
+        });
+
+        loadTodayMetrics();
+    }
+
+    async function saveLog() {
+        const payload = {
+            date: document.getElementById('logDate').value,
+            steps: parseInt(document.getElementById('steps').value) || 0,
+            waterIntakeLiters: parseFloat(document.getElementById('water').value) || 0,
+            calorieIntake: parseInt(document.getElementById('calories').value) || 0
+        };
+
+        await fetch(`/api/health/log/${userId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        loadLogs();
+    }
+
+    function logout() {
+        localStorage.clear();
+        window.location.href = '/login.html';
+    }
+</script>
+</body>
+</html>
