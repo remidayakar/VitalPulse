@@ -6,96 +6,21 @@
     <title>Create Account | VitalPulse</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --accent-green: #10b981;
-            --accent-glow: rgba(16, 185, 129, 0.4);
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-        }
-
+        :root { --bg: #0f172a; --card-bg: rgba(30, 41, 59, 0.7); --accent-green: #10b981; --accent-glow: rgba(16, 185, 129, 0.4); --text-main: #f8fafc; --text-sub: #94a3b8; }
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
-
-        body {
-            background: radial-gradient(circle at top left, #064e3b, #0f172a);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            width: 380px;
-            position: relative;
-        }
-
-        .btn-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-sub);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-home:hover {
-            color: var(--text-main);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
+        body { background: radial-gradient(circle at top left, #064e3b, #0f172a); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
+        .card { background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); width: 380px; position: relative; }
+        .btn-home { display: inline-flex; align-items: center; color: var(--text-sub); text-decoration: none; font-size: 13px; font-weight: 600; margin-bottom: 20px; padding: 6px 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-home:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.1); }
         h2 { font-size: 26px; font-weight: 800; margin: 0 0 8px 0; text-align: center; }
-        .sub { color: var(--text-sub); font-size: 14px; text-align: center; margin-bottom: 28px; }
-
-        .input-group { margin-bottom: 18px; }
+        .sub { color: var(--text-sub); font-size: 14px; text-align: center; margin-bottom: 24px; }
+        .input-group { margin-bottom: 16px; }
         label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; }
-
-        input {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px 16px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: var(--accent-green);
-            box-shadow: 0 0 12px var(--accent-glow);
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 8px 20px var(--accent-glow);
-        }
-
+        input, select { width: 100%; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 12px 16px; color: white; font-size: 14px; outline: none; }
+        input:focus, select:focus { border-color: var(--accent-green); box-shadow: 0 0 12px var(--accent-glow); }
+        select option { background: #0f172a; color: white; }
+        button { width: 100%; padding: 14px; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 10px; box-shadow: 0 8px 20px var(--accent-glow); }
         button:hover { transform: translateY(-2px); }
-
         .footer-text { text-align: center; font-size: 14px; color: var(--text-sub); margin-top: 20px; }
         .footer-text a { color: var(--accent-green); text-decoration: none; font-weight: 600; }
         .msg { margin-top: 15px; text-align: center; font-size: 13px; font-weight: 600; }
@@ -106,15 +31,28 @@
 <div class="card">
     <a href="/index.html" class="btn-home">← Home</a>
     <h2>Create Account</h2>
-    <div class="sub">Start tracking your health journey</div>
+    <div class="sub">Join VitalPulse as a Client or Mentor</div>
 
     <div class="input-group">
-        <label>Choose Username</label>
+        <label>Username</label>
         <input type="text" id="username" placeholder="Pick a username">
     </div>
     <div class="input-group">
-        <label>Choose Password</label>
+        <label>Password</label>
         <input type="password" id="password" placeholder="••••••••">
+    </div>
+    <div class="input-group">
+        <label>Account Type</label>
+        <select id="role" onchange="toggleMentorDropdown()">
+            <option value="CLIENT">Client (Health Tracker)</option>
+            <option value="MENTOR">Mentor (Health Coach)</option>
+        </select>
+    </div>
+    <div class="input-group" id="mentorGroup">
+        <label>Select Assigned Mentor</label>
+        <select id="mentorId">
+            <option value="">-- No Mentor Assigned --</option>
+        </select>
     </div>
 
     <button onclick="handleRegister()">Sign Up</button>
@@ -126,12 +64,33 @@
 </div>
 
 <script>
+    async function loadMentors() {
+        try {
+            const res = await fetch('/api/auth/mentors');
+            const mentors = await res.json();
+            const select = document.getElementById('mentorId');
+            select.innerHTML = '<option value="">-- No Mentor Assigned --</option>';
+            mentors.forEach(m => {
+                select.innerHTML += `<option value="${m.id}">${m.username}</option>`;
+            });
+        } catch (e) { console.error(e); }
+    }
+
+    function toggleMentorDropdown() {
+        const role = document.getElementById('role').value;
+        document.getElementById('mentorGroup').style.display = role === 'CLIENT' ? 'block' : 'none';
+    }
+
+    loadMentors();
+
     async function handleRegister() {
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value.trim();
+        const role = document.getElementById('role').value;
+        const mentorId = document.getElementById('mentorId').value;
 
         if (!username || !password) {
-            alert('Please enter both fields');
+            alert('Please enter both username and password');
             return;
         }
 
@@ -139,7 +98,7 @@
             const res = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ username, password, role, mentorId: mentorId || null })
             });
 
             const msgDiv = document.getElementById('message');

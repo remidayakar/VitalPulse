@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Portal | VitalPulse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0b0f19; --card-bg: rgba(23, 32, 51, 0.7); --accent: #6366f1; --accent-green: #10b981; --text-main: #f8fafc; --text-sub: #94a3b8; }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
+        body { background: var(--bg); color: var(--text-main); margin: 0; padding: 40px 20px; }
+        .header { max-width: 900px; margin: 0 auto 30px auto; display: flex; justify-content: space-between; align-items: center; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .logout-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px 18px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .client-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 20px; margin-bottom: 20px; }
+        .client-card h3 { margin: 0 0 10px 0; color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px; }
+        th { color: var(--text-sub); padding: 10px; font-size: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        td { padding: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2>Mentor Portal // Coach <span id="mentorName">...</span></h2>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+    <h3>Assigned Clients Progress</h3>
+    <div id="clientsList">Loading assigned clients...</div>
+</div>
+
+<script>
+    const mentorId = localStorage.getItem('userId');
+    const username = localStorage.getItem('username');
+
+    if (!mentorId) {
+        window.location.href = '/login.html';
+    } else {
+        document.getElementById('mentorName').innerText = username;
+        loadClients();
+    }
+
+    async function loadClients() {
+        const res = await fetch(`/api/mentor/clients/${mentorId}`);
+        const clients = await res.json();
+        const container = document.getElementById('clientsList');
+        container.innerHTML = '';
+
+        if (clients.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-sub);">No clients assigned yet.</p>';
+            return;
+        }
+
+        for (let client of clients) {
+            const logsRes = await fetch(`/api/mentor/client-logs/${client.id}`);
+            const logs = await logsRes.json();
+            
+            let rowsHtml = '';
+            logs.slice(0, 5).forEach(log => {
+                const reached = log.steps >= 10000 && log.waterIntakeLiters >= 3.5 && log.calorieIntake >= 2000;
+                rowsHtml += `<tr>
+                    <td>${log.date}</td>
+                    <td>${log.steps.toLocaleString()} steps</td>
+                    <td>${log.waterIntakeLiters} L</td>
+                    <td>${log.calorieIntake.toLocaleString()} kcal</td>
+                    <td style="color: ${reached ? '#34d399' : '#818cf8'}">${reached ? '✅ Goal Met' : '⏳ In Progress'}</td>
+                </tr>`;
+            });
+
+            container.innerHTML += `
+                <div class="client-card">
+                    <h3>👤 Client: ${client.username}</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>Steps</th><th>Water</th><th>Calories</th><th>Status</th></tr>
+                        </thead>
+                        <tbody>${rowsHtml || '<tr><td colspan="5">No logs recorded yet.</td></tr>'}</tbody>
+                    </table>
+                </div>
+            `;
+        }
+    }
+
+    function logout() {
+        localStorage.clear();
+        window.location.href = '/login.html';
+    }
+</script>
+</body>
+</html>

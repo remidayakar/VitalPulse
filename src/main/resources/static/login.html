@@ -142,11 +142,17 @@
         });
 
         if (res.ok) {
-            const user = await res.json();
-            localStorage.setItem('userId', user.id);
-            localStorage.setItem('username', user.username);
-            window.location.href = '/dashboard.html';
-        } else {
+    const user = await res.json();
+    localStorage.setItem('userId', user.id);
+    localStorage.setItem('username', user.username);
+    localStorage.setItem('role', user.role);
+
+    if (user.role === 'MENTOR') {
+        window.location.href = '/mentor-dashboard.html';
+    } else {
+        window.location.href = '/dashboard.html';
+    }
+} else {
             document.getElementById('message').innerText = 'Invalid username or password';
         }
     }
