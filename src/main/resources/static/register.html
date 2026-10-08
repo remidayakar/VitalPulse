@@ -6,21 +6,95 @@
     <title>Create Account | VitalPulse</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0f172a; --card-bg: rgba(30, 41, 59, 0.7); --accent-green: #10b981; --accent-glow: rgba(16, 185, 129, 0.4); --text-main: #f8fafc; --text-sub: #94a3b8; }
+        :root {
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --accent-green: #059669;
+            --accent-glow: rgba(5, 150, 105, 0.25);
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+        }
+
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; }
-        body { background: radial-gradient(circle at top left, #064e3b, #0f172a); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
-        .card { background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); width: 380px; position: relative; }
-        .btn-home { display: inline-flex; align-items: center; color: var(--text-sub); text-decoration: none; font-size: 13px; font-weight: 600; margin-bottom: 20px; padding: 6px 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .btn-home:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.1); }
-        h2 { font-size: 26px; font-weight: 800; margin: 0 0 8px 0; text-align: center; }
+
+        body {
+            background: radial-gradient(circle at top left, #dcfce7, #f8fafc);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid #e2e8f0;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+            width: 380px;
+            position: relative;
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-home:hover {
+            color: var(--text-main);
+            background: #e2e8f0;
+        }
+
+        h2 { font-size: 26px; font-weight: 800; margin: 0 0 8px 0; text-align: center; color: var(--text-main); }
         .sub { color: var(--text-sub); font-size: 14px; text-align: center; margin-bottom: 24px; }
+
         .input-group { margin-bottom: 16px; }
         label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; }
-        input, select { width: 100%; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 12px 16px; color: white; font-size: 14px; outline: none; }
-        input:focus, select:focus { border-color: var(--accent-green); box-shadow: 0 0 12px var(--accent-glow); }
-        select option { background: #0f172a; color: white; }
-        button { width: 100%; padding: 14px; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 10px; box-shadow: 0 8px 20px var(--accent-glow); }
+
+        input, select {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+
         button:hover { transform: translateY(-2px); }
+
         .footer-text { text-align: center; font-size: 14px; color: var(--text-sub); margin-top: 20px; }
         .footer-text a { color: var(--accent-green); text-decoration: none; font-weight: 600; }
         .msg { margin-top: 15px; text-align: center; font-size: 13px; font-weight: 600; }
@@ -103,12 +177,12 @@
 
             const msgDiv = document.getElementById('message');
             if (res.ok) {
-                msgDiv.style.color = '#34d399';
+                msgDiv.style.color = '#059669';
                 msgDiv.innerText = 'Account created! Redirecting to login...';
                 setTimeout(() => window.location.href = '/login.html', 1200);
             } else {
                 const errText = await res.text();
-                msgDiv.style.color = '#f87171';
+                msgDiv.style.color = '#dc2626';
                 msgDiv.innerText = errText || 'Registration failed.';
             }
         } catch (err) {
